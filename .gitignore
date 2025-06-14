@@ -1,6 +1,8 @@
 # CUSTOM GITIGNORE FILE
 .env
 
+ideas/
+
 # Sprint Boot and Java auto-generated ignores
 HELP.md
 target/
