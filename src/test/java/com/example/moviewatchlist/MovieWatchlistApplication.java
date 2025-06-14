@@ -1,4 +1,3 @@
-// Adjust package declaration based on your convention
 package com.example.moviewatchlist;
 
 import com.example.moviewatchlist.model.Movie;
@@ -20,6 +19,9 @@ public class MovieWatchlistApplication {
     @Autowired
     private MovieService movieService;
 
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         SpringApplication.run(MovieWatchlistApplication.class, args);
     }

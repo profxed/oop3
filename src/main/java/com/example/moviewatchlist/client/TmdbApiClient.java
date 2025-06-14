@@ -21,6 +21,10 @@ public class TmdbApiClient {
         this.tmdbApiConfig = tmdbApiConfig;
     }
 
+    /** 
+     * @param title
+     * @return TmdbMovieSearchResponseDto
+     */
     public TmdbMovieSearchResponseDto searchMovie(String title) {
         String url = UriComponentsBuilder.fromUriString(tmdbApiConfig.getBaseUrl() + "search/movie")
                 .queryParam("api_key", tmdbApiConfig.getKey())
@@ -29,6 +33,10 @@ public class TmdbApiClient {
         return restTemplate.getForObject(url, TmdbMovieSearchResponseDto.class);
     }
 
+    /** 
+     * @param movieId
+     * @return TmdbMovieDto
+     */
     public TmdbMovieDto getMovieDetails(Long movieId) {
         String url = UriComponentsBuilder.fromUriString(tmdbApiConfig.getBaseUrl() + "movie/" + movieId)
                 .queryParam("api_key", tmdbApiConfig.getKey())
