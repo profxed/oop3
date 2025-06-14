@@ -8,10 +8,11 @@ import com.example.moviewatchlist.dto.omdb.OmdbMovieDto;
 import com.example.moviewatchlist.dto.tmdb.TmdbMovieSearchResponseDto;
 import com.example.moviewatchlist.dto.tmdb.TmdbMovieDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class MovieService {
@@ -27,64 +28,50 @@ public class MovieService {
         this.tmdbApiClient = tmdbApiClient;
     }
 
-    public Movie saveMovie(Movie movie) {
-        return movieRepository.save(movie);
-    }
-
     public Movie addMovieByTitle(String title) {
         OmdbMovieDto omdbMovie = omdbApiClient.getMovieData(title);
+        if (omdbMovie == null || !"True".equalsIgnoreCase(omdbMovie.getResponse())) return null;
 
-        if (omdbMovie == null || !"True".equalsIgnoreCase(omdbMovie.getResponse())) {
-            // TODO: Handle movie not found or errors from OMDb API gracefully
-            System.err.println("OMDb API Error: " + (omdbMovie != null ? omdbMovie.getError() : "Unknown error"));
-            
-            // Possibly throw a custom exception?
-            return null;
-        }
+        TmdbMovieSearchResponseDto tmdbSearch = tmdbApiClient.searchMovie(title);
+        Long tmdbId = (tmdbSearch != null && !tmdbSearch.getResults().isEmpty()) ? tmdbSearch.getResults().get(0).getId() : null;
+        TmdbMovieDto tmdbDetails = (tmdbId != null) ? tmdbApiClient.getMovieDetails(tmdbId) : null;
 
-        TmdbMovieSearchResponseDto tmdbSearchResponse = tmdbApiClient.searchMovie(title);
-        Long tmdbMovieId = null;
-        if (tmdbSearchResponse != null && tmdbSearchResponse.getResults() != null && !tmdbSearchResponse.getResults().isEmpty()) {
-            
-            // Get the first result, assuming it's the most relevant
-            tmdbMovieId = tmdbSearchResponse.getResults().get(0).getId();
-        }
-
-        TmdbMovieDto tmdbMovieDetails = null;
-        if (tmdbMovieId != null) {
-            tmdbMovieDetails = tmdbApiClient.getMovieDetails(tmdbMovieId);
-        } else {
-            // TODO: Handle case where movie is found on OMDb but not TMDB search
-            System.err.println("Movie found on OMDb but not in TMDB search: " + title);
-        }
-
-        // Create a Movie entity
         Movie movie = new Movie();
         movie.setImdbId(omdbMovie.getImdbId());
         movie.setTitle(omdbMovie.getTitle());
         movie.setYear(omdbMovie.getYear());
         movie.setDirector(omdbMovie.getDirector());
         movie.setGenre(omdbMovie.getGenre());
-
-        // TODO: Extract similar movies from tmdbMovieDetails and set it.
-        // This requires parsing the nested JSON structure for 'similar' movies from TmdbMovieDto
-        if (tmdbMovieDetails != null && tmdbMovieDetails.getSimilar() != null) {
-            // Assuming getSimilar() exists in TmdbMovieDto
-            // We'll need to update TmdbMovieDto to include similar movies
-        }
-
-        // TODO: Implement image downloading and set imageFilePath
-        // For now, we can just store the poster URL as a placeholder or null.
         movie.setImageFilePath(omdbMovie.getPoster());
-
-        // Initial values for watched and rating
         movie.setWatched(false);
         movie.setRating(null);
 
-        // TODO: The database...
-        // Save the movie to the database when available
         return movieRepository.save(movie);
     }
 
-    // TODO: Add methods for retrieving, updating watched status, updating rating, and deleting movies.
+    public Page<Movie> getAllMovies(Pageable pageable) {
+        return movieRepository.findAll(pageable);
+    }
+
+    public Movie updateWatched(Long id, boolean watched) {
+        Optional<Movie> optional = movieRepository.findById(id);
+        if (optional.isEmpty()) return null;
+        Movie movie = optional.get();
+        movie.setWatched(watched);
+        return movieRepository.save(movie);
+    }
+
+    public Movie updateRating(Long id, Integer rating) {
+        Optional<Movie> optional = movieRepository.findById(id);
+        if (optional.isEmpty()) return null;
+        Movie movie = optional.get();
+        movie.setRating(rating);
+        return movieRepository.save(movie);
+    }
+
+    public boolean deleteMovie(Long id) {
+        if (!movieRepository.existsById(id)) return false;
+        movieRepository.deleteById(id);
+        return true;
+    }
 }
