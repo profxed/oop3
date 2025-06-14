@@ -36,8 +36,4 @@ public class TmdbApiClient {
                 .build().toUriString();
         return restTemplate.getForObject(url, TmdbMovieDto.class);
     }
-
-    // TODO: Add a method to fetch images specifically if needed, or parse from TmdbMovieDto later.
-    // The getMovieDetails already fetches 'images' and 'similar' if append_to_response is used.
-    // we'll need to parse the TmdbMovieDto for these appended responses, handled in the MovieService.
 }

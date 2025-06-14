@@ -25,11 +25,20 @@ public class OmdbApiClient {
     public OmdbMovieDto getMovieData(String title) {
         // UriComponentsBuilder for safe and correct URL construction
         String url = UriComponentsBuilder.fromHttpUrl(omdbApiConfig.getUrl())
-                                       .queryParam("t", title)
-                                       .queryParam("apikey", omdbApiConfig.getKey())
-                                       .toUriString();
+                .queryParam("t", title)
+                .queryParam("apikey", omdbApiConfig.getKey())
+                .toUriString();
 
         System.out.println("Requesting OMDb URL: " + url);
         return restTemplate.getForObject(url, OmdbMovieDto.class);
     }
+
+    public OmdbMovieDto getMovieById(String imdbId) {
+        String url = UriComponentsBuilder.fromHttpUrl(omdbApiConfig.getUrl())
+                .queryParam("i", imdbId)
+                .queryParam("apikey", omdbApiConfig.getKey())
+                .toUriString();
+        return restTemplate.getForObject(url, OmdbMovieDto.class);
+    }
+
 }
