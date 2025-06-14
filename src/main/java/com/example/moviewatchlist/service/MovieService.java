@@ -38,6 +38,10 @@ public class MovieService {
         this.tmdbApiConfig = tmdbApiConfig;
     }
 
+    /** 
+     * @param title
+     * @return List<MovieDataDto>
+     */
     public List<MovieDataDto> lookupByTitle(String title) {
         OmdbMovieDto omdb = omdbApiClient.getMovieData(title);
         TmdbMovieSearchResponseDto search = tmdbApiClient.searchMovie(title);
@@ -82,6 +86,10 @@ public class MovieService {
         return List.of(o, t);
     }
 
+    /** 
+     * @param movie
+     * @return List<MovieDataDto>
+     */
     public List<MovieDataDto> fetchSources(Movie movie) {
         OmdbMovieDto omdb = omdbApiClient.getMovieById(movie.getImdbId());
         TmdbMovieSearchResponseDto search = tmdbApiClient.searchMovie(movie.getTitle());
@@ -123,6 +131,10 @@ public class MovieService {
         return List.of(o, t);
     }
 
+    /** 
+     * @param movie
+     * @return CombinedMovieDto
+     */
     public CombinedMovieDto fetchCombined(Movie movie) {
         OmdbMovieDto omdb = omdbApiClient.getMovieById(movie.getImdbId());
 
@@ -135,6 +147,10 @@ public class MovieService {
         return new CombinedMovieDto(omdb, tmdb);
     }
 
+    /** 
+     * @param title
+     * @return Movie
+     */
     public Movie addMovieByTitle(String title) {
         OmdbMovieDto omdbMovie = omdbApiClient.getMovieData(title);
         if (omdbMovie == null || !"True".equalsIgnoreCase(omdbMovie.getResponse()))
@@ -170,10 +186,19 @@ public class MovieService {
         return movieRepository.save(m);
     }
 
+    /** 
+     * @param pageable
+     * @return Page<Movie>
+     */
     public Page<Movie> getAllMovies(Pageable pageable) {
         return movieRepository.findAll(pageable);
     }
 
+    /** 
+     * @param id
+     * @param watched
+     * @return Movie
+     */
     public Movie updateWatched(Long id, boolean watched) {
         Optional<Movie> o = movieRepository.findById(id);
         if (o.isEmpty())
@@ -183,6 +208,11 @@ public class MovieService {
         return movieRepository.save(m);
     }
 
+    /** 
+     * @param id
+     * @param rating
+     * @return Movie
+     */
     public Movie updateRating(Long id, Integer rating) {
         Optional<Movie> o = movieRepository.findById(id);
         if (o.isEmpty())
@@ -192,6 +222,10 @@ public class MovieService {
         return movieRepository.save(m);
     }
 
+    /** 
+     * @param id
+     * @return boolean
+     */
     public boolean deleteMovie(Long id) {
         if (!movieRepository.existsById(id))
             return false;

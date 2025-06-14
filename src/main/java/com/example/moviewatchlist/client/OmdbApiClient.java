@@ -22,6 +22,10 @@ public class OmdbApiClient {
         System.out.println("OMDB API Key: " + omdbApiConfig.getKey());
     }
 
+    /** 
+     * @param title
+     * @return OmdbMovieDto
+     */
     public OmdbMovieDto getMovieData(String title) {
         // UriComponentsBuilder for safe and correct URL construction
         String url = UriComponentsBuilder.fromHttpUrl(omdbApiConfig.getUrl())
@@ -33,6 +37,10 @@ public class OmdbApiClient {
         return restTemplate.getForObject(url, OmdbMovieDto.class);
     }
 
+    /** 
+     * @param imdbId
+     * @return OmdbMovieDto
+     */
     public OmdbMovieDto getMovieById(String imdbId) {
         String url = UriComponentsBuilder.fromHttpUrl(omdbApiConfig.getUrl())
                 .queryParam("i", imdbId)

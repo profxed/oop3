@@ -10,6 +10,7 @@ import java.util.Map;
 
 // ENV testing controller to expose configuration properties
 // for now...
+// Com'n it's just a homework...
 @RestController
 public class ConfigController {
 
@@ -25,6 +26,9 @@ public class ConfigController {
     @Value("${tmdb.base-url}")
     private String tmdbBaseUrl;
 
+    /** 
+     * @return Map<String, String>
+     */
     @GetMapping("/config")
     public Map<String, String> showConfig() {
         Map<String, String> config = new HashMap<>();
