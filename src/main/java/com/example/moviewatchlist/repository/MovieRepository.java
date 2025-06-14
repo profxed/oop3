@@ -1,8 +1,10 @@
-package main.java.com.example.moviewatchlist.repository;
+package com.example.moviewatchlist.repository;
 
-import main.java.com.example.moviewatchlist.model.Movie;
+import com.example.moviewatchlist.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+// TODO...
 
 @Repository // Marks this interface as a Spring repository component
 public interface MovieRepository extends JpaRepository<Movie, Long> {

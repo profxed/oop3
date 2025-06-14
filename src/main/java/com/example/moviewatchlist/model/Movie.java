@@ -1,4 +1,4 @@
-package main.java.com.example.moviewatchlist.model;
+package com.example.moviewatchlist.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -27,6 +27,4 @@ public class Movie {
     private String imageFilePath; // Local path where downloaded images are saved
     private boolean watched = false; // Default to not watched
     private Integer rating; // Rating from 1-5
-
-    // You can add more fields as needed later, e.g., TMDB ID, plot, etc.
 }

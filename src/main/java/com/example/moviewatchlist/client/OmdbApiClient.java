@@ -1,12 +1,12 @@
-package main.java.com.example.moviewatchlist.client;
+package com.example.moviewatchlist.client;
 
-import main.java.com.example.moviewatchlist.config.OmdbApiConfig;
+import com.example.moviewatchlist.config.OmdbApiConfig;
+import com.example.moviewatchlist.dto.omdb.OmdbMovieDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Map;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class OmdbApiClient {
@@ -18,11 +18,18 @@ public class OmdbApiClient {
     public OmdbApiClient(RestTemplateBuilder restTemplateBuilder, OmdbApiConfig omdbApiConfig) {
         this.restTemplate = restTemplateBuilder.build();
         this.omdbApiConfig = omdbApiConfig;
+
+        System.out.println("OMDB API Key: " + omdbApiConfig.getKey());
     }
 
-    public Map<String, Object> getMovieData(String title) {
-        String url = omdbApiConfig.getUrl() + "?t=" + title + "&apikey=" + omdbApiConfig.getKey();
-        // OMDB returns JSON, Spring will automatically map it to a Map<String, Object>
-        return restTemplate.getForObject(url, Map.class);
+    public OmdbMovieDto getMovieData(String title) {
+        // UriComponentsBuilder for safe and correct URL construction
+        String url = UriComponentsBuilder.fromHttpUrl(omdbApiConfig.getUrl())
+                                       .queryParam("t", title)
+                                       .queryParam("apikey", omdbApiConfig.getKey())
+                                       .toUriString();
+
+        System.out.println("Requesting OMDb URL: " + url);
+        return restTemplate.getForObject(url, OmdbMovieDto.class);
     }
 }

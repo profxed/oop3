@@ -5,8 +5,8 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_DATABASE: movie_watchlist_db
-      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: watchlist_db
+      MYSQL_ROOT_PASSWORD: your_mysql_root_password 
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:

@@ -1,4 +1,4 @@
-package main.java.com.example.moviewatchlist.config;
+package com.example.moviewatchlist.config;
 
 import lombok.Getter;
 import lombok.Setter;
