@@ -5,11 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import lombok.*;
+
 @Entity
 @Table(name = "movies")
-@Data // Lombok: Generates getters, setters, toString, equals, and hashCode
+@Getter
+@Setter
 @NoArgsConstructor // Lombok: Generates a no-argument constructor
 @AllArgsConstructor // Lombok: Generates a constructor with all fields
+@Builder
 public class Movie {
 
     @Id
@@ -18,6 +22,7 @@ public class Movie {
 
     private String imdbId; // To store OMDb's unique ID for external lookup
     private String title;
+
     @Column(name = "release_year")
     private String year;
     private String director;
