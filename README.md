@@ -28,20 +28,14 @@ A minimal Spring Boot backend to search, save, and manage movies from OMDb and 
    Copy `.env.sample` → `.env` and fill in:
 
    ```dotenv
-   DB_URL=jdbc:mysql://localhost:3306/watchlist_db?useSSL=false&serverTimezone=UTC
+   DB_URL=jdbc:jdbc:h2:mem:testdb
    DB_USERNAME=user
    DB_PASSWORD=password
    OMDB_API_KEY=your_omdb_key
    TMDB_API_KEY=your_tmdb_key
    ```
 
-3. **Launch MySQL**
-
-   ```bash
-   docker-compose up -d
-   ```
-
-4. **Build & run**
+3. **Build & run**
 
    ```bash
    mvn clean package
@@ -154,6 +148,11 @@ src/
 for a complete list of the API's endpoints you can always use your browser:
 ```
 GET /swagger-ui.html
+```
+
+for a db panel-control and console:
+```
+GET /h2-console
 ```
 
 ---

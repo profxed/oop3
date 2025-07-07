@@ -18,6 +18,7 @@ public class Movie {
 
     private String imdbId; // To store OMDb's unique ID for external lookup
     private String title;
+    @Column(name = "release_year")
     private String year;
     private String director;
     private String genre;
