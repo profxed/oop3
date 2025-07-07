@@ -8,7 +8,6 @@ A minimal Spring Boot backend to search, save, and manage movies from OMDb and 
 
 * Java 21
 * Maven 3.6+
-* Docker & Docker Compose (for MySQL)
 * OMDb API key
 * TMDB API key
 
